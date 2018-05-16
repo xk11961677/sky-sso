@@ -1,0 +1,40 @@
+.sendWrap{
+	width: 600px;
+	height: 500px;
+	border: 2px solid #9bbedf;
+	border-radius: 20px;
+	margin: 50px auto 100px;
+}
+.page2 .sendWrap p{
+	font-size: 20px;text-align: center;
+	padding-top: 30px;
+	color: #dfdfdf;
+}
+.page2 .sendWrap .ac{
+	border-bottom: 2px solid #dfdfdf;
+	color: #000
+}
+.page2 .sendWrap li{
+	height: 80px;
+	line-height: 80px;
+	font-size: 18px;
+}
+.page2 .sendWrap li .left{
+	display: inline-block;
+	width: 200px;text-align: right;
+	float: left;
+	box-sizing: border-box;
+	padding-right: 20px;
+}
+.page2 .sendWrap li .right{
+	display: inline-block;
+	width: 400px;
+	float: right;
+}
+.page2 .sendWrap li .right input{
+	display: inline-block;
+	width: 80%;
+	height: 40px;
+	border: 2px dotted #d5d6d7;
+	border-radius: 5px;
+}

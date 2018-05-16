@@ -1,0 +1,40 @@
+.page3 .div1{
+	font-size: 16px;font-weight: 700;
+	padding: 50px 0;
+}
+.page3 .div1 select{
+	display: inline-block;
+	width:300px;
+	height: 40px;border: 1px solid #a6a7a7;
+	background: #fff;border-radius: 0;
+	outline: none;margin-left: 20px;
+}
+.page3 textarea{
+	display: inline-block;
+	width: 100%;
+	height: 200px;
+	font-size: 14px;
+	box-sizing: border-box;
+	padding: 10px;outline: none;
+}
+.page3 .div2{
+	font-size: 14px;
+	padding: 15px 0
+}
+.page3 .div2 input{
+	margin-left: 20px;
+	margin-right: 5px;
+}
+.page3 .div3{
+	text-align: center;
+	padding: 20px 0;
+}
+.page3 .div3 p{
+	font-size: 16px;
+	display: inline-block;
+	width: 200px;
+	height: 50px;
+	color: #fff;
+	line-height: 50px;
+	background: #66cafa
+}

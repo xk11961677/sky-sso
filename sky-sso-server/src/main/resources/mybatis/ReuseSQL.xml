@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CommonEntity">
+
+	<sql id="paginationPrefix">
+		
+	</sql>
+	
+	<sql id="paginationSuffix">
+		<if test="pageSize!=null">
+			<if test="pageSize &gt;=500">
+				LIMIT #{startIdx,jdbcType=DECIMAL},500
+			</if>
+			<if test="pageSize &lt; 500">
+				LIMIT #{startIdx,jdbcType=DECIMAL},#{pageSize,jdbcType=DECIMAL}
+			</if>
+			
+		</if>
+		<if test="pageSize==null">
+			LIMIT 0,500
+		</if>
+	</sql>
+	
+	<sql id="limitSql">
+		<if test="pageSize!=null">
+			<if test="pageSize &gt;=500">
+				LIMIT #{startIdx,jdbcType=DECIMAL},500
+			</if>
+			<if test="pageSize &lt; 500">
+				LIMIT #{startIdx,jdbcType=DECIMAL},#{pageSize,jdbcType=DECIMAL}
+			</if>
+			
+		</if>
+		<if test="pageSize==null">
+			LIMIT 0,500
+		</if>
+	</sql>
+</mapper>

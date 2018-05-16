@@ -1,0 +1,74 @@
+debug: false
+---
+#公用配置
+server:
+#  context-path: /surveynew
+  tomcat:
+    uri-encoding: UTF-8
+
+micro-service:
+  name: zyk-sso-a
+
+
+spring:
+  boot:
+    admin:
+        client:
+          prefer-ip: true
+          metadata:
+            user.name: zyk          #These two are needed so that the server
+            user.password: 123456   #can access the proteceted client endpoints
+        url: http://59.110.63.236:8084/
+        username: zyk
+        password: 123456
+  profiles:
+    active: dev
+  mvc:
+    view:
+      prefix: /WEB-INF/view
+      suffix: .jsp
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+management:
+  security:
+    enabled: false # spring-boot 1.5.2之后严格执行安全策略，所以需要配置这个为false
+info: #定义各种额外的详情给服务端显示
+  app:
+    name: zyk-sso-a
+    version: v1.0.1
+
+logging:
+  config: classpath:logback-spring.xml
+
+mybatis:
+  config-location: /mybatis/mybatis-config.xml
+  mapper-locations: /mybatis/mapper/*Mapper.xml,/mybatis/ReuseSQL.xml
+
+---
+spring:
+  profiles: dev
+
+server:
+  port: 8087
+
+
+---
+spring:
+  profiles: test
+
+server:
+  port: 8087
+
+
+---
+spring:
+  profiles: pro
+
+server:
+  port: 8087
+
+
+

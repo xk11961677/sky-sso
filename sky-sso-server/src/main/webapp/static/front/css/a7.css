@@ -1,0 +1,109 @@
+.tit7{
+			border-bottom: 1px solid #78797a;
+			font-size: 36px;
+			font-weight: 300;
+			padding-top: 50px;
+			margin-bottom: 10px;
+		}
+		.page7 .mes li{
+			display: inline-block;
+			width: 500px;
+			height: 60px;
+			line-height: 60px;
+		}
+		.page7_2 li{
+			display: inline-block;
+			width: 800px;
+			height: 60px;
+			line-height: 60px;
+		}
+		.page7 .mes li .left,.page7_2 li .left{
+			display: inline-block;
+			width: 150px;
+			float: left;
+			font-size: 18px;
+			color: #999;
+			font-weight: 300;
+			/*text-align: right;*/
+		}
+		.page7 .mes li .right,.page7_2 li .right{
+			display: inline-block;
+			width: 350px;
+			float: left;padding-top: 5px;
+			box-sizing: border-box;
+		}
+		.page7 .mes li .right input,.page7_2 li .right input{
+			display: inline-block;
+			width: 250px;height: 35px;
+			border: 1px dotted #e1e2e2;
+			border-radius: 5px;
+			line-height: 35px;
+		}
+		.page7_2 li .right p{
+			display: inline-block;
+			height: 37px;width: 70px;
+			background: #b9271a;
+			border-radius: 5px;font-size: 14px;text-align: center;
+			line-height: 37px;color: #fff;margin-left: 20px;
+		}
+		.page7 .card{
+			padding-top: 20px;
+		}
+		.page7 .card p{
+			font-size: 18px;
+			font-weight: 300;
+			color: #999;
+		}
+		.page7 .card p span{
+			font-size: 12px;
+		}
+		.fileWrap {
+    		text-align: center;
+		}
+		.fileWrap>div {
+		    width: 300px;
+		    height: 200px;
+		    display: inline-block;
+		    border: 1px dashed #ddd;
+		    border-radius: 10px;
+		    margin: 20px 60px;
+		}
+		.fileWrap input {
+		    width: 300px;
+		    height: 200px;
+		    border: none;
+		    opacity: 0;
+		}
+		.fileWrap>div p {
+    		color: #999;
+    		font-size: 14px;
+		}
+		.tjBtn {
+		    text-align: center;
+		    padding-top: 20px;
+		}
+		.tjBtn span {
+		    display: inline-block;
+		    padding: 10px 50px;
+		    background: #4797d0;
+		    border-radius: 10px;
+		    color: #fff;
+		    font-size: 14px;
+		}
+		.page7{
+			position: relative;
+			padding-bottom: 50px;
+		}
+		.userImg{
+			background:url(../img/setup_top06.png) no-repeat;position:absolute;right: 150px;top: 150px;width: 150px;height: 150px;border-radius: 50%;background-size:cover;overflow: hidden;
+		}
+		.userImg div{
+			font-size: 14px;color: #fff;
+			background: rgba(0,0,0,0.5);
+			height: 100%;display: none;
+			text-align: center;
+			line-height: 150px;
+		}
+		.userImg:hover div{
+			display: block;
+		}

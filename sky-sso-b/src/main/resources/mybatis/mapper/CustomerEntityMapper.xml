@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- 功能模块:  -->
+<mapper namespace="CustomerEntityMapper" >
+
+	<!--通用表字段列表-->
+	<resultMap id="BaseResultMap" type="com.zyk.sso.client.entity.CustomerEntity">
+		<result column="CUSTOMERID" property="customerid" jdbcType="INTEGER"/>
+		<result column="LOGINNAME" property="loginname" jdbcType="VARCHAR"/>
+		<result column="LOGINPASSWORD" property="loginpassword" jdbcType="VARCHAR"/>
+		<result column="NAME" property="name" jdbcType="VARCHAR"/>
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR"/>
+		<result column="AUTHORITY" property="authority" jdbcType="INTEGER"/>
+		<result column="PHOTO" property="photo" jdbcType="VARCHAR"/>
+		<result column="CRT_TIME" property="crtTime" jdbcType="TIMESTAMP"/>
+		<result column="UPT_TIME" property="uptTime" jdbcType="TIMESTAMP"/>
+		<result column="LAST_LOGIN_TIME" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+		<result column="ATTR1" property="attr1" jdbcType="VARCHAR"/>
+		<result column="ATTR2" property="attr2" jdbcType="VARCHAR"/>
+		<result column="ATTR3" property="attr3" jdbcType="VARCHAR"/>
+		<result column="ATTR4" property="attr4" jdbcType="VARCHAR"/>
+		<result column="ATTR5" property="attr5" jdbcType="VARCHAR"/>
+	</resultMap>
+	<!--通用表字段列表-->
+
+	<!--user customize code start-->
+
+	<!--user customize code end  -->
+
+	<!--通用查询条件组装-->
+	<sql id="whereContation">
+		<if test="customerid != null">
+			AND  CUSTOMERID=#{customerid,jdbcType=INTEGER}
+		</if>
+		<if test="loginname != null">
+			AND  LOGINNAME=#{loginname,jdbcType=VARCHAR}
+		</if>
+		<if test="loginpassword != null">
+			AND  LOGINPASSWORD=#{loginpassword,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null">
+			AND  NAME=#{name,jdbcType=VARCHAR}
+		</if>
+		<if test="mobile != null">
+			AND  MOBILE=#{mobile,jdbcType=VARCHAR}
+		</if>
+		<if test="authority != null">
+			AND  AUTHORITY=#{authority,jdbcType=INTEGER}
+		</if>
+		<if test="photo != null">
+			AND  PHOTO=#{photo,jdbcType=VARCHAR}
+		</if>
+		<if test="crtTime != null">
+			AND  CRT_TIME=#{crtTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="uptTime != null">
+			AND  UPT_TIME=#{uptTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastLoginTime != null">
+			AND  LAST_LOGIN_TIME=#{lastLoginTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="attr1 != null">
+			AND  ATTR1=#{attr1,jdbcType=VARCHAR}
+		</if>
+		<if test="attr2 != null">
+			AND  ATTR2=#{attr2,jdbcType=VARCHAR}
+		</if>
+		<if test="attr3 != null">
+			AND  ATTR3=#{attr3,jdbcType=VARCHAR}
+		</if>
+		<if test="attr4 != null">
+			AND  ATTR4=#{attr4,jdbcType=VARCHAR}
+		</if>
+		<if test="attr5 != null">
+			AND  ATTR5=#{attr5,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<!--查询字段列表拼装-->
+	<sql id="baseColumnList">
+		CUSTOMERID
+		,LOGINNAME
+		,LOGINPASSWORD
+		,NAME
+		,MOBILE
+		,AUTHORITY
+		,PHOTO
+		,CRT_TIME
+		,UPT_TIME
+		,LAST_LOGIN_TIME
+		,LOGIN_NUM
+		,ATTR1
+		,ATTR2
+		,ATTR3
+		,ATTR4
+		,ATTR5
+	</sql>
+
+	<!--
+	方法名称: insert
+	调用路径: CustomerEntityMapper.insert
+	开发信息:
+	处理信息: 保存记录
+	-->
+	<insert id="insert" parameterType="com.zyk.sso.client.entity.CustomerEntity" >
+		INSERT  INTO  CUSTOMER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="customerid != null">
+				CUSTOMERID,
+			</if>
+			<if test="loginname != null">
+				LOGINNAME,
+			</if>
+			<if test="loginpassword != null">
+				LOGINPASSWORD,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="mobile != null">
+				MOBILE,
+			</if>
+			<if test="authority != null">
+				AUTHORITY,
+			</if>
+			<if test="photo != null">
+				PHOTO,
+			</if>
+			<if test="crtTime != null">
+				CRT_TIME,
+			</if>
+			<if test="uptTime != null">
+				UPT_TIME,
+			</if>
+			<if test="lastLoginTime != null">
+				LAST_LOGIN_TIME,
+			</if>
+			<if test="attr1 != null">
+				ATTR1,
+			</if>
+			<if test="attr2 != null">
+				ATTR2,
+			</if>
+			<if test="attr3 != null">
+				ATTR3,
+			</if>
+			<if test="attr4 != null">
+				ATTR4,
+			</if>
+			<if test="attr5 != null">
+				ATTR5,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="customerid != null">
+				#{customerid,jdbcType=INTEGER},
+			</if>
+			<if test="loginname != null">
+				#{loginname,jdbcType=VARCHAR},
+			</if>
+			<if test="loginpassword != null">
+				#{loginpassword,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="authority != null">
+				#{authority,jdbcType=INTEGER},
+			</if>
+			<if test="photo != null">
+				#{photo,jdbcType=VARCHAR},
+			</if>
+			<if test="crtTime != null">
+				#{crtTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="uptTime != null">
+				#{uptTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="attr1 != null">
+				#{attr1,jdbcType=VARCHAR},
+			</if>
+			<if test="attr2 != null">
+				#{attr2,jdbcType=VARCHAR},
+			</if>
+			<if test="attr3 != null">
+				#{attr3,jdbcType=VARCHAR},
+			</if>
+			<if test="attr4 != null">
+				#{attr4,jdbcType=VARCHAR},
+			</if>
+			<if test="attr5 != null">
+				#{attr5,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<!--
+	方法名称: update
+	调用路径: CustomerEntityMapper.update
+	开发信息:
+	处理信息: 修改记录
+	-->
+	<update id="update" parameterType="com.zyk.sso.client.entity.CustomerEntity" >
+		UPDATE   CUSTOMER
+		<set>
+			<if test="loginname != null">
+				LOGINNAME = #{loginname,jdbcType=VARCHAR},
+			</if>
+			<if test="loginpassword != null">
+				LOGINPASSWORD = #{loginpassword,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				MOBILE = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="authority != null">
+				AUTHORITY = #{authority,jdbcType=INTEGER},
+			</if>
+			<if test="photo != null">
+				PHOTO = #{photo,jdbcType=VARCHAR},
+			</if>
+			<if test="crtTime != null">
+				CRT_TIME = #{crtTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="uptTime != null">
+				UPT_TIME = #{uptTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastLoginTime != null">
+				LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginNum != null">
+				LOGIN_NUM = #{loginNum,jdbcType=INTEGER},
+			</if>
+			<if test="attr1 != null">
+				ATTR1 = #{attr1,jdbcType=VARCHAR},
+			</if>
+			<if test="attr2 != null">
+				ATTR2 = #{attr2,jdbcType=VARCHAR},
+			</if>
+			<if test="attr3 != null">
+				ATTR3 = #{attr3,jdbcType=VARCHAR},
+			</if>
+			<if test="attr4 != null">
+				ATTR4 = #{attr4,jdbcType=VARCHAR},
+			</if>
+			<if test="attr5 != null">
+				ATTR5 = #{attr5,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE
+		CUSTOMERID = #{customerid,jdbcType=INTEGER}
+	</update>
+
+	<!--
+	方法名称: updateBak
+	调用路径: CustomerEntityMapper.updateBak
+	开发信息:
+	处理信息: 修改记录
+	-->
+	<update id="updateBak" parameterType="com.zyk.sso.client.entity.CustomerEntity" >
+		UPDATE   CUSTOMER
+		<set>
+			LOGINNAME = #{loginname,jdbcType=VARCHAR},
+			LOGINPASSWORD = #{loginpassword,jdbcType=VARCHAR},
+			NAME = #{name,jdbcType=VARCHAR},
+			MOBILE = #{mobile,jdbcType=VARCHAR},
+			AUTHORITY = #{authority,jdbcType=INTEGER},
+			PHOTO = #{photo,jdbcType=VARCHAR},
+			CRT_TIME = #{crtTime,jdbcType=TIMESTAMP},
+			UPT_TIME = #{uptTime,jdbcType=TIMESTAMP},
+			LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+			ATTR1 = #{attr1,jdbcType=VARCHAR},
+			ATTR2 = #{attr2,jdbcType=VARCHAR},
+			ATTR3 = #{attr3,jdbcType=VARCHAR},
+			ATTR4 = #{attr4,jdbcType=VARCHAR},
+			ATTR5 = #{attr5,jdbcType=VARCHAR},
+		</set>
+		WHERE
+		CUSTOMERID = #{customerid,jdbcType=INTEGER}
+	</update>
+
+	<!--
+	方法名称: deleteByPriKey
+	调用路径:CustomerEntityMapper.deleteByPriKey
+	开发信息:
+	处理信息: 删除记录
+	-->
+	<delete id="deleteByPriKey" parameterType="com.zyk.sso.client.entity.CustomerEntity">
+		DELETE 	FROM CUSTOMER
+		WHERE
+		CUSTOMERID = #{customerid,jdbcType=INTEGER}
+	</delete>
+
+	<!--
+	方法名称: findByPriKey
+	调用路径: CustomerEntityMapper.findByPriKey
+	开发信息:
+	处理信息: 根据主键查询记录
+	-->
+	<select id="findByPriKey" parameterType="com.zyk.sso.client.entity.CustomerEntity" resultType="com.zyk.sso.client.entity.CustomerEntity">
+		SELECT
+		<include refid="baseColumnList"/>
+		FROM   CUSTOMER
+		WHERE
+		CUSTOMERID = #{customerid,jdbcType=INTEGER}
+	</select>
+
+	<!--
+	方法名称: getPagenationList
+	调用路径: CustomerEntityMapper.getPagenationList
+	开发信息:
+	处理信息: 分页查询记录
+	-->
+	<select id="getPagenationList" parameterType="com.zyk.sso.client.entity.CustomerEntity" resultType="com.zyk.sso.client.entity.CustomerEntity">
+		<!-- 分页条 -->
+		<include refid="CommonEntity.paginationPrefix"/>
+		SELECT
+		<include refid="baseColumnList"/>
+		FROM   CUSTOMER
+		WHERE 1=1
+		<include refid="whereContation"/>
+		<if test="columnSort != null">
+			ORDER BY ${columnSort}
+		</if>
+		<!-- 分页条 -->
+		<include refid="CommonEntity.paginationSuffix"/>
+	</select>
+
+	<!--
+	方法名称: getPagenationList-count
+	调用路径: CustomerEntityMapper.getPagenationList-count
+	开发信息:
+	处理信息: 查询记录数
+	-->
+	<select id="getPagenationList-count" parameterType="com.zyk.sso.client.entity.CustomerEntity" resultType="int">
+		SELECT count(1)  FROM  CUSTOMER
+		WHERE 1=1
+		<include refid="whereContation"/>
+	</select>
+
+	<!--
+	方法名称: getList
+	调用路径: CustomerEntityMapper.getList
+	开发信息:
+	处理信息: 根据条件查询记录
+	-->
+	<select id="getList" parameterType="com.zyk.sso.client.entity.CustomerEntity" resultType="com.zyk.sso.client.entity.CustomerEntity">
+		SELECT
+		<include refid="baseColumnList"/>
+		FROM   CUSTOMER
+		WHERE 1=1
+		<include refid="whereContation"/>
+		<if test="columnSort != null">
+			ORDER BY ${columnSort}
+		</if>
+		limit 0,100
+	</select>
+
+
+	<!--
+	方法名称: batchInsert
+	调用路径: CustomerEntityMapper.batchInsert
+	开发信息:
+	处理信息: 保存记录
+	-->
+	<insert id="batchInsert" parameterType="java.util.List" >
+		INSERT  INTO  CUSTOMER
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			CUSTOMERID,
+			LOGINNAME,
+			LOGINPASSWORD,
+			NAME,
+			MOBILE,
+			AUTHORITY,
+			PHOTO,
+			CRT_TIME,
+			UPT_TIME,
+			LAST_LOGIN_TIME,
+			ATTR1,
+			ATTR2,
+			ATTR3,
+			ATTR4,
+			ATTR5,
+		</trim>
+		values
+		<foreach collection="list" item="entity" separator=",">
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				#{entity.customerid,jdbcType=INTEGER},
+				#{entity.loginname,jdbcType=VARCHAR},
+				#{entity.loginpassword,jdbcType=VARCHAR},
+				#{entity.name,jdbcType=VARCHAR},
+				#{entity.mobile,jdbcType=VARCHAR},
+				#{entity.authority,jdbcType=INTEGER},
+				#{entity.photo,jdbcType=VARCHAR},
+				#{entity.crtTime,jdbcType=TIMESTAMP},
+				#{entity.uptTime,jdbcType=TIMESTAMP},
+				#{entity.lastLoginTime,jdbcType=TIMESTAMP},
+				#{entity.attr1,jdbcType=VARCHAR},
+				#{entity.attr2,jdbcType=VARCHAR},
+				#{entity.attr3,jdbcType=VARCHAR},
+				#{entity.attr4,jdbcType=VARCHAR},
+				#{entity.attr5,jdbcType=VARCHAR},
+			</trim>
+		</foreach>
+	</insert>
+	<!--
+	方法名称: batchUpdate
+	调用路径: CustomerEntityMapper.batchUpdate
+	开发信息:
+	处理信息: 修改记录
+	-->
+	<update id="batchUpdate" parameterType="java.util.List" >
+		<foreach collection="list" item="entity" separator=",">
+			UPDATE   CUSTOMER
+			<set>
+				<if test="loginname != null">
+					LOGINNAME = #{entity.loginname,jdbcType=VARCHAR},
+				</if>
+				<if test="loginpassword != null">
+					LOGINPASSWORD = #{entity.loginpassword,jdbcType=VARCHAR},
+				</if>
+				<if test="name != null">
+					NAME = #{entity.name,jdbcType=VARCHAR},
+				</if>
+				<if test="mobile != null">
+					MOBILE = #{entity.mobile,jdbcType=VARCHAR},
+				</if>
+				<if test="authority != null">
+					AUTHORITY = #{entity.authority,jdbcType=INTEGER},
+				</if>
+				<if test="photo != null">
+					PHOTO = #{entity.photo,jdbcType=VARCHAR},
+				</if>
+				<if test="crtTime != null">
+					CRT_TIME = #{entity.crtTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="uptTime != null">
+					UPT_TIME = #{entity.uptTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="lastLoginTime != null">
+					LAST_LOGIN_TIME = #{entity.lastLoginTime,jdbcType=TIMESTAMP},
+				</if>
+				<if test="attr1 != null">
+					ATTR1 = #{entity.attr1,jdbcType=VARCHAR},
+				</if>
+				<if test="attr2 != null">
+					ATTR2 = #{entity.attr2,jdbcType=VARCHAR},
+				</if>
+				<if test="attr3 != null">
+					ATTR3 = #{entity.attr3,jdbcType=VARCHAR},
+				</if>
+				<if test="attr4 != null">
+					ATTR4 = #{entity.attr4,jdbcType=VARCHAR},
+				</if>
+				<if test="attr5 != null">
+					ATTR5 = #{entity.attr5,jdbcType=VARCHAR},
+				</if>
+			</set>
+			WHERE
+			CUSTOMERID = #{customerid,jdbcType=INTEGER}
+		</foreach>
+	</update>
+
+</mapper>
