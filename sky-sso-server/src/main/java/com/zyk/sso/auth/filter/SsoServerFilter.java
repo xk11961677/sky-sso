@@ -43,11 +43,6 @@ public class SsoServerFilter extends OncePerRequestFilter {
 
         String qs = request.getQueryString();
 
-        if (uri.contains("sso/verify") && qs.contains(Const.PARAM_TICKET) || uri.contains("sso/logout")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         HttpSession session = request.getSession();
 
         String tgt = Objects.toString(session.getAttribute(Const.TGT_TICKET), "");
@@ -57,6 +52,11 @@ public class SsoServerFilter extends OncePerRequestFilter {
         tgt = CookieUtil.getValue(request, Const.TGC_TICKET);
 
         System.out.println("filter get tgt from cookie tgt:{}" + tgt);
+
+        if ((!StringUtils.isEmpty(tgt) && uri.contains("sso/verify") && qs.contains(Const.PARAM_TICKET) ) ||  uri.contains("sso/logout")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String service = request.getParameter("service");
 

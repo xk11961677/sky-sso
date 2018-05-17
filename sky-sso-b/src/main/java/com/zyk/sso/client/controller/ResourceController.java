@@ -1,5 +1,6 @@
 package com.zyk.sso.client.controller;
 
+import com.zyk.sso.client.constants.Const;
 import com.zyk.sso.client.service.CustomerService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * @description
@@ -28,8 +32,11 @@ public class ResourceController extends BaseController {
      * @return
      */
     @RequestMapping(value = "test", method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView test() {
+    public ModelAndView test(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
+        HttpSession session = request.getSession();
+        Object attribute = session.getAttribute(Const.SERVICE_TICKET);
+        log.info("resource test session b:{}",attribute);
         modelAndView.setViewName("/register");
         return modelAndView;
     }

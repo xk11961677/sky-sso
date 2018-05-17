@@ -1,6 +1,7 @@
 package com.zyk.sso.client.filter;
 
 import com.zyk.sso.client.constants.Const;
+import com.zyk.sso.client.utils.HashMapBackedSessionMappingStorage;
 import com.zyk.sso.client.utils.HttpClientUtil;
 import com.zyk.sso.client.utils.JwtUtil;
 import com.zyk.sso.client.utils.TokenState;
@@ -63,6 +64,8 @@ public class SsoClientFilter extends OncePerRequestFilter {
                     if (TokenState.VALID.getState().equals(state)) {
                         isLogin = true;
                         session.setAttribute(Const.SERVICE_TICKET, st);
+                        HashMapBackedSessionMappingStorage.getInstance().MANAGED_SESSIONS.put(st,session);
+                        HashMapBackedSessionMappingStorage.getInstance().ID_TO_SESSION_KEY_MAPPING.put(session.getId(),st);
                     }
                 }
             }

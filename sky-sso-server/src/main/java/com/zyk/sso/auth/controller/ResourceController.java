@@ -1,6 +1,7 @@
 package com.zyk.sso.auth.controller;
 
 import com.zyk.sso.auth.common.constants.Const;
+import com.zyk.sso.auth.util.CookieUtil;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
@@ -43,5 +45,12 @@ public class ResourceController extends BaseController {
         HttpSession session = request.getSession();
         session.setAttribute("aaa","123");
         return Objects.toString(session.getAttribute(Const.TGT_TICKET));
+    }
+
+    @RequestMapping(value = "remove", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public String remove(HttpServletRequest request, HttpServletResponse response) {
+        CookieUtil.clear(response,Const.TGC_TICKET,"sso.com");
+        return Objects.toString(CookieUtil.getValue(request,Const.TGC_TICKET));
     }
 }

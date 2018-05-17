@@ -3,6 +3,7 @@ package com.zyk.sso.client;
 import com.zyk.sso.client.common.util.ZykGsonHttpMessageConverter;
 import com.zyk.sso.client.filter.SsoClientFilter;
 import com.zyk.sso.client.filter.SsoClientSignOutFilter;
+import com.zyk.sso.client.listener.SingleSignOutHttpSessionListener;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
@@ -23,10 +25,18 @@ public class SsoClientApplication extends SpringBootServletInitializer {
     }
 
     @Bean
-    public FilterRegistrationBean jwtFilter() {
+    public FilterRegistrationBean SsoClientFilter() {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new SsoClientFilter());
         registrationBean.addUrlPatterns("/resource/*");
+        return registrationBean;
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean SsoClientListner() {
+        final ServletListenerRegistrationBean registrationBean = new ServletListenerRegistrationBean();
+        SingleSignOutHttpSessionListener listener = new SingleSignOutHttpSessionListener();
+        registrationBean.setListener(listener);
         return registrationBean;
     }
 

@@ -25,11 +25,6 @@ import javax.servlet.http.HttpSession;
 @Api(value = "用户管理", tags = {"用户管理"})
 public class CustomerController extends BaseController {
 
-    @Autowired
-    private CustomerService customerService;
-
-    private static final String jwtTokenCookieName = "JWT-TOKEN";
-
     /**
      * 跳转注册页面
      *

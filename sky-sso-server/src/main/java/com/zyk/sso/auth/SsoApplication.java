@@ -25,20 +25,22 @@ public class SsoApplication extends SpringBootServletInitializer {
     }
 
     @Bean
-    public FilterRegistrationBean jwtFilter(RedisUtils redisUtils) {
+    public FilterRegistrationBean SsoServerFilter(RedisUtils redisUtils) {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         registrationBean.setFilter(new SsoServerFilter(redisUtils));
         registrationBean.addUrlPatterns("/sso/*");
         return registrationBean;
     }
 
-    public static void main(String[] args) {
-        SpringApplication.run(SsoApplication.class, args);
-    }
-
     @Bean
     public ZykGsonHttpMessageConverter zykGsonHttpMessageConverter() {
         return new ZykGsonHttpMessageConverter();
     }
+
+    public static void main(String[] args) {
+        SpringApplication.run(SsoApplication.class, args);
+    }
+
+
 
 }

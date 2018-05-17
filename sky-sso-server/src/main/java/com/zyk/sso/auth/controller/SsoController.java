@@ -103,8 +103,9 @@ public class SsoController extends BaseController {
 
         try {
             String tgt = (String) redisUtils.get(ticket);
-
-            redisUtils.lPush(tgt, logout, 7200L, TimeUnit.SECONDS);
+            if (!StringUtils.isEmpty(tgt)) {
+                redisUtils.lPush(tgt, logout, 7200L, TimeUnit.SECONDS);
+            }
 
             redisUtils.remove(ticket);
 
@@ -144,9 +145,13 @@ public class SsoController extends BaseController {
         log.info("get tgt from cookie tgt:{}", tgt);
 
         try {
-            if (!redisUtils.exists(tgt)) {
+            if (redisUtils.exists(tgt)) {
                 List<Object> list = redisUtils.lRange(tgt, 0, -1);
-                list.forEach(l -> HttpClientUtil.sendPostRequest(Objects.toString(l), null, false));
+                list.forEach(l -> {
+                    String s = HttpClientUtil.sendGetRequest(Objects.toString(l), "UTF-8");
+                    log.info("http client post logout :{}", s);
+                });
+//                redisUtils.remove(tgt);
             }
         } catch (Exception e) {
             log.error("注销其他应用系统失败:{}", e);
@@ -154,9 +159,11 @@ public class SsoController extends BaseController {
 
         session.removeAttribute(Const.TGT_TICKET);
 
-        CookieUtil.clear(response, Const.TGC_TICKET);
+        session.invalidate();
 
-        service = "/sso/toLogin?service="+service;
+        CookieUtil.clear(response, Const.TGC_TICKET, "sso.com");
+
+        service = "/sso/toLogin?service=" + service;
 
         ModelAndView view = new ModelAndView();
         view.addObject("service", service);
