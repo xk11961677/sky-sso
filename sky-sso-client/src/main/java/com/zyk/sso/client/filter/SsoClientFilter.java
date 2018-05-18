@@ -1,14 +1,12 @@
 package com.zyk.sso.client.filter;
 
 import com.zyk.sso.client.constants.Const;
-import com.zyk.sso.client.utils.HashMapBackedSessionMappingStorage;
+import com.zyk.sso.client.utils.ClientSessionStorage;
 import com.zyk.sso.client.utils.HttpClientUtil;
 import com.zyk.sso.client.utils.JwtUtil;
 import com.zyk.sso.client.utils.TokenState;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -62,10 +60,11 @@ public class SsoClientFilter extends OncePerRequestFilter {
                     Map<String, Object> map = JwtUtil.validToken(st);
                     String state = Objects.toString(map.get("state"), "");
                     if (TokenState.VALID.getState().equals(state)) {
-                        isLogin = true;
                         session.setAttribute(Const.SERVICE_TICKET, st);
-                        HashMapBackedSessionMappingStorage.getInstance().MANAGED_SESSIONS.put(st,session);
-                        HashMapBackedSessionMappingStorage.getInstance().ID_TO_SESSION_KEY_MAPPING.put(session.getId(),st);
+                        ClientSessionStorage.getInstance().MANAGED_SESSIONS.put(st,session);
+                        ClientSessionStorage.getInstance().ID_TO_SESSION_KEY_MAPPING.put(session.getId(),st);
+                        response.sendRedirect(""+request.getRequestURL());//重复跳转一次,将st去掉
+                        return;
                     }
                 }
             }

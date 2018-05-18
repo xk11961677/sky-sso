@@ -1,6 +1,7 @@
 package com.zyk.sso.client.filter;
 
 import com.zyk.sso.client.constants.Const;
+import com.zyk.sso.client.utils.ClientSessionStorage;
 import com.zyk.sso.client.utils.HttpClientUtil;
 import com.zyk.sso.client.utils.JwtUtil;
 import com.zyk.sso.client.utils.TokenState;
@@ -36,21 +37,27 @@ public class SsoClientSignOutFilter extends OncePerRequestFilter {
 
         boolean isSignOut = false;
 
-        HttpSession session = request.getSession();
-
         String uri = request.getRequestURI();
 
         String service = request.getParameter("service");
 
+        String signOut = request.getParameter("signOut");
+
         if (uri.contains(LOGOUT)) {
-
-            session.removeAttribute(Const.SERVICE_TICKET);
-
-            session.invalidate();
-
+            if (!StringUtils.isEmpty(signOut)) {    //认证中心注销时使用
+                HttpSession session = ClientSessionStorage.getInstance().MANAGED_SESSIONS.get(signOut);
+                if(session == null) {
+                    session = request.getSession();
+                }
+                String sessionId = session.getId();
+                session.removeAttribute(Const.SERVICE_TICKET);
+                session.invalidate();
+                ClientSessionStorage.getInstance().MANAGED_SESSIONS.remove(signOut);
+                ClientSessionStorage.getInstance().ID_TO_SESSION_KEY_MAPPING.remove(sessionId);
+            }
             isSignOut = true;
         }
-        if(StringUtils.isEmpty(service)) {
+        if (StringUtils.isEmpty(service)) {
             service = getContextPath(request) + DEFAULT_INDEX;
         }
         String path = SSO_LOGOUT + "?service=" + service;

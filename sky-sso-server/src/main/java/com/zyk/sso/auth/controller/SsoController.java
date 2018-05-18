@@ -52,41 +52,29 @@ public class SsoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "login", method = {RequestMethod.POST})
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username,
-                              @RequestParam("password") String password, @RequestParam("service") String service) {
+    public String login(HttpServletRequest request, HttpServletResponse response, @RequestParam("username") String username,
+                        @RequestParam("password") String password, @RequestParam("service") String service) {
         Date date = new Date();
         Map<String, Object> payload = new HashMap<>();
         payload.put("username", "291969452");//用户id
         payload.put("iat", date.getTime());//生成时间
         payload.put("ext", date.getTime() + 1000 * 60 * 60 * 2);
 
-        String token = JwtUtil.createToken(payload);
+        String tgt = JwtUtil.createToken(payload);
 
-        HttpSession session = request.getSession();
-
-        session.setAttribute(Const.TGT_TICKET, token);
-
-        CookieUtil.create(response, Const.TGC_TICKET, token, false, 7200, "sso.com");
+        CookieUtil.create(response, Const.TGC_TICKET, tgt, false, 7200, "sso.com");
 
         payload.put("type", Const.SERVICE_TICKET);
 
         String st = JwtUtil.createToken(payload);
 
-        redisUtils.set(st, token, 7200L, TimeUnit.SECONDS);
+        redisUtils.set(st, tgt, 7200L, TimeUnit.SECONDS);
 
-        String mark = "?";
+        String mark = service.contains("?") ? "&" : "?";
 
-        if (service.indexOf("?") > -1) {
-            mark = "&";
-        }
         service += (mark + Const.PARAM_TICKET + "=" + st);
 
-//        return "redirect:" + service;
-
-        ModelAndView view = new ModelAndView();
-        view.addObject("service", service);
-        view.setViewName("/setCookie");
-        return view;
+        return "redirect:" + service;
     }
 
     /**
@@ -98,16 +86,11 @@ public class SsoController extends BaseController {
      */
     @RequestMapping(value = "verify", method = {RequestMethod.GET})
     @ResponseBody
-    public String verify(@RequestParam("ticket") String ticket, @RequestParam("logout") String logout) {
+    public String verify(HttpServletRequest request, @RequestParam("ticket") String ticket, @RequestParam("logout") String logout) {
         String principal = null;
 
         try {
-            String tgt = (String) redisUtils.get(ticket);
-            if (!StringUtils.isEmpty(tgt)) {
-                redisUtils.lPush(tgt, logout, 7200L, TimeUnit.SECONDS);
-            }
 
-            redisUtils.remove(ticket);
 
             Map<String, Object> tgt_data = JwtUtil.validToken(ticket);
 
@@ -120,6 +103,15 @@ public class SsoController extends BaseController {
                 value.put("ext", date.getTime() + 1000 * 60 * 60 * 2);
                 principal = JwtUtil.createToken(value);
             }
+
+            String tgt = (String) redisUtils.get(ticket);
+            String mark = logout.contains("?") ? "&" : "?";
+            logout += (mark + "signOut=" + principal);
+            if (!StringUtils.isEmpty(tgt)) {
+                redisUtils.lPush(tgt, logout, 7200L, TimeUnit.SECONDS);
+            }
+
+            redisUtils.remove(ticket);
         } catch (Exception e) {
             log.error("验证令牌出现错误:{}", e);
         }
@@ -133,42 +125,26 @@ public class SsoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "logout", method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "service") String service) {
-        HttpSession session = request.getSession();
+    public String logout(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "service") String service) {
 
-        String tgt = Objects.toString(session.getAttribute(Const.TGT_TICKET));
-
-        log.info("get tgt from session tgt:{}", tgt);
-
-        tgt = CookieUtil.getValue(request, Const.TGC_TICKET);
+        String tgt = CookieUtil.getValue(request, Const.TGC_TICKET);
 
         log.info("get tgt from cookie tgt:{}", tgt);
 
-        try {
+        if (!StringUtils.isEmpty(tgt)) {
             if (redisUtils.exists(tgt)) {
                 List<Object> list = redisUtils.lRange(tgt, 0, -1);
                 list.forEach(l -> {
-                    String s = HttpClientUtil.sendGetRequest(Objects.toString(l), "UTF-8");
-                    log.info("http client post logout :{}", s);
+                    log.info("http client post logout :{}", l);
+                    HttpClientUtil.sendGetRequest(Objects.toString(l), "UTF-8");
                 });
-//                redisUtils.remove(tgt);
+                redisUtils.remove(tgt);
             }
-        } catch (Exception e) {
-            log.error("注销其他应用系统失败:{}", e);
+            CookieUtil.clear(response, Const.TGC_TICKET, "sso.com");
+
+            service = "/sso/toLogin?service=" + service;
         }
-
-        session.removeAttribute(Const.TGT_TICKET);
-
-        session.invalidate();
-
-        CookieUtil.clear(response, Const.TGC_TICKET, "sso.com");
-
-        service = "/sso/toLogin?service=" + service;
-
-        ModelAndView view = new ModelAndView();
-        view.addObject("service", service);
-        view.setViewName("/setCookie");
-        return view;
+        return "redirect:" + service;
     }
 
 

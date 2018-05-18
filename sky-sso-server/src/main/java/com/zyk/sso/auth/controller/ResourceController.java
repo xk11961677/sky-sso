@@ -32,10 +32,8 @@ public class ResourceController extends BaseController {
     @RequestMapping(value = "test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String test(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Object aaa = session.getAttribute("aaa");
-        System.out.println(aaa);
-        return Objects.toString(session.getAttribute(Const.TGT_TICKET));
+        String value = CookieUtil.getValue(request, Const.TGC_TICKET);
+        return value;
     }
 
 
