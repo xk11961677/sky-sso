@@ -22,45 +22,68 @@ import java.util.Objects;
 
 public class SsoClientSignOutFilter extends OncePerRequestFilter {
 
+    /**
+     * 单点登录注销地址
+     */
     @Getter
     @Setter
-    private String SSO_LOGOUT = "http://www.sso.com:8086/sso/logout";
+    private String SSO_LOGOUT = "/sso/logout";
 
+    /**
+     * 默认登录后进入地址
+     */
     @Getter
     @Setter
     private String DEFAULT_INDEX = "/resource/test";
 
-    private String LOGOUT = "/customer/logout";
+    /**
+     * 注销参数
+     */
+    private String LOGOUT = "logout";
+
+    /**
+     * 单点登录域名
+     */
+    @Getter
+    @Setter
+    private String SSO_DOMIAN = "http://www.sso.com:8086";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         boolean isSignOut = false;
 
-        String uri = request.getRequestURI();
+        String callback = request.getParameter("callback"); //
 
-        String service = request.getParameter("service");
+        String loginSuccessUrl = request.getParameter("loginSuccessUrl");   //登录成功后进去地址
 
-        String signOut = request.getParameter("signOut");
+        String signOutTicket = request.getParameter("signOutTicket");   //SSO注销时令牌
 
-        if (uri.contains(LOGOUT)) {
-            if (!StringUtils.isEmpty(signOut)) {    //认证中心注销时使用
-                HttpSession session = ClientSessionStorage.getInstance().MANAGED_SESSIONS.get(signOut);
-                if(session == null) {
+        String qs = request.getQueryString();
+
+        String path = "";
+
+        if (!StringUtils.isEmpty(qs) && qs.contains(LOGOUT)) {
+            if (!StringUtils.isEmpty(signOutTicket)) {    //认证中心注销时使用
+                HttpSession session = ClientSessionStorage.getInstance().getManagedSessions(signOutTicket);
+                if (session == null) {
                     session = request.getSession();
                 }
                 String sessionId = session.getId();
                 session.removeAttribute(Const.SERVICE_TICKET);
                 session.invalidate();
-                ClientSessionStorage.getInstance().MANAGED_SESSIONS.remove(signOut);
-                ClientSessionStorage.getInstance().ID_TO_SESSION_KEY_MAPPING.remove(sessionId);
+                ClientSessionStorage.getInstance().removeManagedSessions(signOutTicket);
+                ClientSessionStorage.getInstance().removeIdToSessionKeyMapping(sessionId);
             }
             isSignOut = true;
+            String index = !StringUtils.isEmpty(loginSuccessUrl) ? loginSuccessUrl : getContextPath(request) + DEFAULT_INDEX;
+
+            String url = "?service=" + index;
+
+            url += (!StringUtils.isEmpty(callback) ? "&callback=" + callback : "");
+
+            path = (SSO_DOMIAN + SSO_LOGOUT + url);
         }
-        if (StringUtils.isEmpty(service)) {
-            service = getContextPath(request) + DEFAULT_INDEX;
-        }
-        String path = SSO_LOGOUT + "?service=" + service;
 
         if (!isSignOut) {
             chain.doFilter(request, response);

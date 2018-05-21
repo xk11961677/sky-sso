@@ -91,7 +91,6 @@ public class SsoController extends BaseController {
 
         try {
 
-
             Map<String, Object> tgt_data = JwtUtil.validToken(ticket);
 
             String state = Objects.toString(tgt_data.get("state"));
@@ -106,7 +105,7 @@ public class SsoController extends BaseController {
 
             String tgt = (String) redisUtils.get(ticket);
             String mark = logout.contains("?") ? "&" : "?";
-            logout += (mark + "signOut=" + principal);
+            logout += (mark + "signOutTicket=" + principal);
             if (!StringUtils.isEmpty(tgt)) {
                 redisUtils.lPush(tgt, logout, 7200L, TimeUnit.SECONDS);
             }
@@ -125,24 +124,21 @@ public class SsoController extends BaseController {
      * @return
      */
     @RequestMapping(value = "logout", method = {RequestMethod.POST, RequestMethod.GET})
-    public String logout(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "service") String service) {
+    public String logout(HttpServletRequest request, HttpServletResponse response,
+                         @RequestParam(value = "service", required = false) String service,
+                         @RequestParam(value = "callback", required = false) String callback) {
 
         String tgt = CookieUtil.getValue(request, Const.TGC_TICKET);
-
-        log.info("get tgt from cookie tgt:{}", tgt);
 
         if (!StringUtils.isEmpty(tgt)) {
             if (redisUtils.exists(tgt)) {
                 List<Object> list = redisUtils.lRange(tgt, 0, -1);
-                list.forEach(l -> {
-                    log.info("http client post logout :{}", l);
-                    HttpClientUtil.sendGetRequest(Objects.toString(l), "UTF-8");
-                });
+                list.forEach(l -> HttpClientUtil.sendGetRequest(Objects.toString(l), "UTF-8"));
                 redisUtils.remove(tgt);
             }
             CookieUtil.clear(response, Const.TGC_TICKET, "sso.com");
 
-            service = "/sso/toLogin?service=" + service;
+            service = !StringUtils.isEmpty(callback) ? callback : "/sso/toLogin?service=" + service;
         }
         return "redirect:" + service;
     }

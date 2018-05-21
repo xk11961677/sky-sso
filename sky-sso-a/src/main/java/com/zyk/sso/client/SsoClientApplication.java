@@ -45,7 +45,7 @@ public class SsoClientApplication extends SpringBootServletInitializer {
         final FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         SsoClientSignOutFilter signOutFilter = new SsoClientSignOutFilter();
         registrationBean.setFilter(signOutFilter);
-        registrationBean.addUrlPatterns("/customer/logout");
+        registrationBean.addUrlPatterns("/*");
         return registrationBean;
     }
 
