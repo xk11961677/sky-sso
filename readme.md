@@ -14,11 +14,15 @@
 
 ##### 扩展自定义登录页 #####
         仿照sso登录页表单即可
+
 ##### 自定义退出下次登录后跳转页面 #####
         http://www.a.com:8087/index/logout 此方法redirect页面增加loginSuccessUrl地址
+
 ##### 自定义退出后跳转某个应用登录页面 #####
-        &nbsp;&nbsp;http://www.a.com:8087/index/logout 此方法redirect页面增加callback地址
+        http://www.a.com:8087/index/logout 此方法redirect页面增加callback地址
+        
 ##### 集群 #####
         修改sky-sso-client 存储器  ClientSessionStorage
+
 ##### 原理 #####
         仿照CAS登录流程
