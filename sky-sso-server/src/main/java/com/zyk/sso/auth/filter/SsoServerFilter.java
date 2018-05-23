@@ -43,7 +43,7 @@ public class SsoServerFilter extends OncePerRequestFilter {
 
         String qs = request.getQueryString();
 
-        String tgt = CookieUtil.getValue(request, Const.TGC_TICKET);
+        String tgt = CookieUtil.getCookies(request, Const.TGC_TICKET);
 
         System.out.println("filter get tgt from cookie tgt:{}" + tgt);
 

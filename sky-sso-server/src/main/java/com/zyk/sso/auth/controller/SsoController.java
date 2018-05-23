@@ -62,7 +62,7 @@ public class SsoController extends BaseController {
 
         String tgt = JwtUtil.createToken(payload);
 
-        CookieUtil.create(response, Const.TGC_TICKET, tgt, false, 7200, "sso.com");
+        CookieUtil.setCookies(response, Const.TGC_TICKET, tgt, 7200);
 
         payload.put("type", Const.SERVICE_TICKET);
 
@@ -128,7 +128,7 @@ public class SsoController extends BaseController {
                          @RequestParam(value = "service", required = false) String service,
                          @RequestParam(value = "callback", required = false) String callback) {
 
-        String tgt = CookieUtil.getValue(request, Const.TGC_TICKET);
+        String tgt = CookieUtil.getCookies(request, Const.TGC_TICKET);
 
         if (!StringUtils.isEmpty(tgt)) {
             if (redisUtils.exists(tgt)) {
@@ -136,7 +136,7 @@ public class SsoController extends BaseController {
                 list.forEach(l -> HttpClientUtil.sendGetRequest(Objects.toString(l), "UTF-8"));
                 redisUtils.remove(tgt);
             }
-            CookieUtil.clear(response, Const.TGC_TICKET, "sso.com");
+            CookieUtil.removeCookies(response, Const.TGC_TICKET);
 
             service = !StringUtils.isEmpty(callback) ? callback : "/sso/toLogin?service=" + service;
         }

@@ -32,7 +32,7 @@ public class ResourceController extends BaseController {
     @RequestMapping(value = "test", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String test(HttpServletRequest request) {
-        String value = CookieUtil.getValue(request, Const.TGC_TICKET);
+        String value = CookieUtil.getCookies(request, Const.TGC_TICKET);
         return value;
     }
 
@@ -48,7 +48,7 @@ public class ResourceController extends BaseController {
     @RequestMapping(value = "remove", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public String remove(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtil.clear(response,Const.TGC_TICKET,"sso.com");
-        return Objects.toString(CookieUtil.getValue(request,Const.TGC_TICKET));
+        CookieUtil.removeCookies(response,Const.TGC_TICKET);
+        return Objects.toString(CookieUtil.getCookies(request,Const.TGC_TICKET));
     }
 }
