@@ -5,7 +5,7 @@
     <springProperty name="appName" source="micro-service.name"/>
     <springProperty name="env" source="spring.profiles.active"/>
     <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-        <destination>59.110.63.236:4560</destination>
+        <destination>192.168.43.217:4560</destination>
         <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder" >
             <customFields>{"logenv":"${env}","appname":"${appName}"}</customFields>
         </encoder>
